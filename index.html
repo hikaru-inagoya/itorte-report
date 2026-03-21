@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EC販売戦略レポート 2025｜アイトルテ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #0d0f14;
+  --bg2: #13161e;
+  --bg3: #1a1e28;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #e8eaf0;
+  --text2: #9095a8;
+  --text3: #555b6e;
+  --accent-s: #4f8ef7;
+  --accent-q: #f97316;
+  --accent-green: #22c55e;
+  --accent-red: #ef4444;
+  --accent-yellow: #eab308;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Noto Sans JP', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.7;min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,15,20,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-brand{font-size:13px;font-weight:500;letter-spacing:0.1em;color:var(--text2);font-family:var(--mono)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:12px;color:var(--text3);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-date{font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+/* HERO */
+.hero{padding:140px 2rem 80px;max-width:1100px;margin:0 auto}
+.hero-label{font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem}
+.hero-title{font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem}
+.hero-title span.s{color:var(--accent-s)}
+.hero-title span.q{color:var(--accent-q)}
+.hero-sub{font-size:16px;color:var(--text2);max-width:600px;line-height:1.8;margin-bottom:3rem}
+.hero-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.hero-kpi{background:var(--bg2);padding:1.5rem;text-align:center}
+.hero-kpi-label{font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;margin-bottom:0.5rem}
+.hero-kpi-val{font-size:28px;font-weight:700;letter-spacing:-0.02em}
+.hero-kpi-sub{font-size:11px;color:var(--text3);margin-top:0.3rem}
+.c-s{color:var(--accent-s)}
+.c-q{color:var(--accent-q)}
+.c-g{color:var(--accent-green)}
+.c-r{color:var(--accent-red)}
+.c-y{color:var(--accent-yellow)}
+
+/* SECTIONS */
+.section{max-width:1100px;margin:0 auto;padding:80px 2rem}
+.section-header{margin-bottom:3rem}
+.section-num{font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:0.2em;margin-bottom:0.75rem}
+.section-title{font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem}
+.section-desc{font-size:15px;color:var(--text2);max-width:680px;line-height:1.8}
+.divider{border:none;border-top:1px solid var(--border);margin:0 2rem}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.card-label{font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;margin-bottom:0.5rem}
+.card-val{font-size:24px;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.25rem}
+.card-sub{font-size:12px;color:var(--text3)}
+.card-head{font-size:14px;font-weight:500;margin-bottom:0.5rem}
+.card-body{font-size:13px;color:var(--text2);line-height:1.7}
+.card.accent-s{border-color:rgba(79,142,247,0.3);background:rgba(79,142,247,0.04)}
+.card.accent-q{border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.04)}
+.card.accent-g{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.04)}
+.card.accent-r{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.04)}
+.card.accent-y{border-color:rgba(234,179,8,0.3);background:rgba(234,179,8,0.04)}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+
+/* CHART */
+.chart-wrap{position:relative;width:100%}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.chart-title{font-size:13px;font-weight:500;margin-bottom:0.5rem}
+.chart-subtitle{font-size:11px;color:var(--text3);margin-bottom:1.25rem}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:1rem;font-size:11px;color:var(--text2)}
+.legend span{display:flex;align-items:center;gap:5px}
+.ld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* CHANNEL BADGE */
+.ch-badge{display:inline-block;font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:4px;letter-spacing:0.05em;margin-right:6px}
+.ch-s{background:rgba(79,142,247,0.15);color:var(--accent-s)}
+.ch-q{background:rgba(249,115,22,0.15);color:var(--accent-q)}
+
+/* INSIGHT BLOCK */
+.insight{border-left:2px solid var(--border2);padding:1rem 1.25rem;margin:1rem 0;background:var(--bg3);border-radius:0 8px 8px 0}
+.insight-head{font-size:13px;font-weight:500;margin-bottom:0.4rem}
+.insight-body{font-size:12px;color:var(--text2);line-height:1.7}
+.insight.danger{border-color:var(--accent-red)}
+.insight.success{border-color:var(--accent-green)}
+.insight.warning{border-color:var(--accent-yellow)}
+.insight.info{border-color:var(--accent-s)}
+
+/* ACTION TABLE */
+.action-table{width:100%;border-collapse:collapse;font-size:13px}
+.action-table th{font-weight:500;color:var(--text3);font-size:11px;font-family:var(--mono);letter-spacing:0.08em;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+.action-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text2);line-height:1.6}
+.action-table tr:last-child td{border-bottom:none}
+.action-table td:first-child{color:var(--text);font-weight:500;font-size:12px;white-space:nowrap}
+.priority{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;white-space:nowrap}
+.p-high{background:rgba(239,68,68,0.15);color:var(--accent-red)}
+.p-mid{background:rgba(234,179,8,0.15);color:var(--accent-yellow)}
+.p-low{background:rgba(34,197,94,0.15);color:var(--accent-green)}
+
+/* COMPARE TABLE */
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cmp-table th{background:var(--bg3);font-weight:500;font-size:11px;font-family:var(--mono);letter-spacing:0.08em;padding:10px 14px;border:1px solid var(--border);color:var(--text2);text-align:left}
+.cmp-table td{padding:10px 14px;border:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.6;font-size:12px}
+.cmp-table tr:hover td{background:var(--bg3)}
+.win{color:var(--accent-green);font-weight:500}
+.lose{color:var(--accent-red)}
+
+/* PRODUCT ROW */
+.prod-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
+.prod-row:last-child{border-bottom:none}
+.prod-id{font-family:var(--mono);font-size:11px;color:var(--text3);width:100px;flex-shrink:0}
+.prod-name{flex:1;color:var(--text2)}
+.prod-bar-wrap{width:100px;background:var(--bg3);border-radius:2px;height:4px;flex-shrink:0}
+.prod-bar{height:4px;border-radius:2px}
+.prod-val{width:55px;text-align:right;color:var(--text);font-family:var(--mono);font-size:11px;flex-shrink:0}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border2)}
+.tl-item{position:relative;margin-bottom:2rem}
+.tl-dot{position:absolute;left:-2.3rem;top:4px;width:8px;height:8px;border-radius:50%;background:var(--bg);border:1px solid var(--border2)}
+.tl-month{font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;margin-bottom:0.4rem}
+.tl-title{font-size:14px;font-weight:500;margin-bottom:0.4rem}
+.tl-body{font-size:12px;color:var(--text2);line-height:1.7}
+.tl-dot.s{border-color:var(--accent-s);background:rgba(79,142,247,0.2)}
+.tl-dot.q{border-color:var(--accent-q);background:rgba(249,115,22,0.2)}
+.tl-dot.both{border-color:var(--accent-green);background:rgba(34,197,94,0.2)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:768px){
+  .hero-kpis{grid-template-columns:repeat(2,1fr)}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+
+/* ROUTINE */
+.rt-filter{background:var(--bg2);border:1px solid var(--border);color:var(--text3);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);transition:all 0.2s}
+.rt-filter:hover{border-color:var(--border2);color:var(--text)}
+.rt-filter.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.rt-reset{background:transparent;border:1px solid rgba(239,68,68,0.3);color:#ef4444;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);transition:all 0.2s;margin-left:auto}
+.rt-reset:hover{background:rgba(239,68,68,0.1)}
+.rt-group{margin-bottom:1.5rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:opacity 0.3s}
+.rt-group.hidden{display:none}
+.rt-group-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.rt-group-title{font-size:13px;font-weight:500;flex:1}
+.rt-group-count{font-size:11px;font-family:var(--mono);color:var(--text3)}
+.rt-freq-badge{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;letter-spacing:0.05em}
+.rt-freq-badge.daily{background:rgba(239,68,68,0.15);color:#ef4444}
+.rt-freq-badge.weekly{background:rgba(234,179,8,0.15);color:#eab308}
+.rt-freq-badge.monthly{background:rgba(34,197,94,0.15);color:#22c55e}
+.rt-items{padding:0.5rem 0}
+.rt-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background 0.2s;cursor:pointer}
+.rt-item:last-child{border-bottom:none}
+.rt-item:hover{background:var(--bg3)}
+.rt-item.done{opacity:0.4}
+.rt-item.done .rt-item-title{text-decoration:line-through}
+.rt-check{width:18px;height:18px;flex-shrink:0;margin-top:2px;cursor:pointer;accent-color:#22c55e;border-radius:4px}
+.rt-item label{cursor:pointer;flex:1}
+.rt-item-title{display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.rt-item-desc{display:block;font-size:11px;color:var(--text3);line-height:1.6}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">i-torte / EC ANALYTICS</div>
+  <div class="nav-links">
+    <a href="#shoplist">SHOPLIST</a>
+    <a href="#qoo10">Qoo10</a>
+    <a href="#compare">チャネル比較</a>
+    <a href="#actions">アクション</a>
+    <a href="#roadmap">ロードマップ</a><a href="#routine">ルーティン</a>
+  </div>
+  <div class="nav-date">DATA: 2025.03 — 2026.02</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero reveal">
+  <div class="hero-label">EC SALES ANALYTICS REPORT 2025–2026</div>
+  <h1 class="hero-title">
+    <span class="s">SHOPLIST</span> &amp;<br>
+    <span class="q">Qoo10</span><br>
+    販売戦略レポート
+  </h1>
+  <p class="hero-sub">25年3月〜26年2月の12ヶ月間の販売データを全量分析。各チャネルの勝ち筋と、5販路合計月商1億円に向けた具体的アクションプランを提示する。</p>
+  <div class="hero-kpis">
+    <div class="hero-kpi">
+      <div class="hero-kpi-label">SHOPLIST 年間受注高</div>
+      <div class="hero-kpi-val c-s">2,826万</div>
+      <div class="hero-kpi-sub">月平均 235万円</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-label">Qoo10 年間受注高</div>
+      <div class="hero-kpi-val c-q">3,058万</div>
+      <div class="hero-kpi-sub">月平均 255万円</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-label">2チャネル合計</div>
+      <div class="hero-kpi-val c-g">5,884万</div>
+      <div class="hero-kpi-sub">目標1億円まで残り4,116万</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-label">分析対象データ</div>
+      <div class="hero-kpi-val" style="font-size:20px">100+</div>
+      <div class="hero-kpi-sub">ファイル / 365日分</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ========== SHOPLIST ========== -->
+<div class="section reveal" id="shoplist">
+  <div class="section-header">
+    <div class="section-num">01 — SHOPLIST</div>
+    <h2 class="section-title"><span class="c-s">SHOPLIST</span> チャネル分析</h2>
+    <p class="section-desc">月間コンスタント型モール。CVRは過去最高水準まで改善されているが、訪問者数の急減が最大の課題。スピード便強化が最速の改善策。</p>
+  </div>
+
+  <div class="grid4" style="margin-bottom:1.5rem">
+    <div class="card"><div class="card-label">ピーク月商</div><div class="card-val c-s">364万円</div><div class="card-sub">25/06 — 最高記録</div></div>
+    <div class="card"><div class="card-label">直近月商（26/02）</div><div class="card-val">239万円</div><div class="card-sub">ピーク比▲34%</div></div>
+    <div class="card"><div class="card-label">CVR（26/02）</div><div class="card-val c-g">6.63%</div><div class="card-sub">過去最高 ↑改善中</div></div>
+    <div class="card"><div class="card-label">月間訪問者（26/02）</div><div class="card-val c-r">13,081人</div><div class="card-sub">ピーク比▲51%</div></div>
+  </div>
+
+  <div class="chart-box reveal">
+    <div class="chart-title">月別受注高・訪問者数・CVR推移</div>
+    <div class="chart-subtitle">CVRは改善しているのに売上が伸びない原因 = 訪問者数の激減</div>
+    <div class="legend">
+      <span><span class="ld" style="background:#4f8ef7"></span>受注高（万円）</span>
+      <span><span class="ld" style="background:#f97316"></span>訪問者数（÷100）</span>
+      <span><span class="ld" style="background:#22c55e"></span>CVR（%）</span>
+    </div>
+    <div class="chart-wrap" style="height:240px"><canvas id="sl_main"></canvas></div>
+  </div>
+
+  <div class="grid2 reveal" style="margin-top:1rem">
+    <div class="chart-box">
+      <div class="chart-title">プロパー vs セール比率推移</div>
+      <div class="chart-subtitle">売上ピーク月はセール率83%。依存度が高い</div>
+      <div class="legend">
+        <span><span class="ld" style="background:#4f8ef7"></span>プロパー</span>
+        <span><span class="ld" style="background:#ef4444"></span>セール</span>
+      </div>
+      <div class="chart-wrap" style="height:180px"><canvas id="sl_proper"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">在庫別受注比率推移</div>
+      <div class="chart-subtitle">予約便が28%→0.2%に崩壊（新商品投入停止）</div>
+      <div class="legend">
+        <span><span class="ld" style="background:#4f8ef7"></span>スピード便</span>
+        <span><span class="ld" style="background:#22c55e"></span>通常在庫</span>
+        <span><span class="ld" style="background:#eab308"></span>予約販売</span>
+      </div>
+      <div class="chart-wrap" style="height:180px"><canvas id="sl_stock"></canvas></div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem" class="reveal">
+    <h3 style="font-size:15px;font-weight:500;margin-bottom:1rem">SHOPLISTの核心インサイト</h3>
+    <div class="insight danger">
+      <div class="insight-head">① 訪問者数の激減が最大の問題（CVRは過去最高なのに）</div>
+      <div class="insight-body">CVRは3.89%→6.63%と大幅改善中。しかし訪問者が26,431人→13,081人と半減したため売上が伸びない。集客施策（スピード便強化→検索順位向上）が最優先。</div>
+    </div>
+    <div class="insight danger">
+      <div class="insight-head">② セール依存率78%はブランド価値を毀損している</div>
+      <div class="insight-body">売上ピーク（25/06）はセール率83%。モアコンタクトはプロパー中心で月商5,000万超を維持。目標はプロパー率50%以上。</div>
+    </div>
+    <div class="insight warning">
+      <div class="insight-head">③ 予約便の崩壊 = 新商品投入停止 = 集客エンジン停止</div>
+      <div class="insight-body">予約販売比率が28%→0.2%に激減。新商品の予約公開は「話題性×来店動機」の両方を生む最大の集客手段。再稼働が急務。</div>
+    </div>
+    <div class="insight info">
+      <div class="insight-head">④ 型数を増やしても売上は上がらない（相関-0.40）</div>
+      <div class="insight-body">商品型数と受注高は逆相関。型数より「ヒット商品へのスピード便在庫集中」が先決。bmot-1d・unrla・lemiへの集中投資を推奨。</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem" class="reveal">
+    <h3 style="font-size:15px;font-weight:500;margin-bottom:1rem">SHOPLIST 競合分析（受注高ランキングTOP商品）</h3>
+    <div class="chart-box">
+      <div class="chart-title">自社 vs 競合 商品別受注高（全期間累計 万円）</div>
+      <div class="chart-subtitle">モアコンタクトTOP商品との差は価格帯・スピード便・アンバサダーの有無</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="sl_vs"></canvas></div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card accent-s">
+        <div class="card-head">ゴールデンゾーン：1,400〜1,599円</div>
+        <div class="card-body">SHOPLIST受注高の47%がこの価格帯。自社最強商品bmot-1dもここ（1,275円）。競合TOP10の8割がこのゾーンに集中。主戦場はここ。</div>
+      </div>
+      <div class="card accent-s">
+        <div class="card-head">お気に入り×受注高の相関：0.84</div>
+        <div class="card-body">お気に入りが多い商品は売上も高い。競合TOP商品はアンバサダー起用でお気に入りを獲得。自社もlemi（坂巻有紗）・unrlaが急成長中。</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem" class="reveal">
+    <h3 style="font-size:15px;font-weight:500;margin-bottom:1rem">SHOPLIST 自社TOP商品 スピード便活用率と受注高</h3>
+    <div class="chart-box">
+      <div class="chart-subtitle">スピード便率の低い商品（omyo・lumia-com等）が最大の機会損失。CVR×1.3〜1.5倍の改善余地あり</div>
+      <div id="sl_prod_list" style="padding:0.5rem 0"></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ========== QOO10 ========== -->
+<div class="section reveal" id="qoo10">
+  <div class="section-header">
+    <div class="section-num">02 — QOO10</div>
+    <h2 class="section-title"><span class="c-q">Qoo10</span> チャネル分析</h2>
+    <p class="section-desc">メガ割爆発型モール。年間注文の58.6%がわずか42日間のメガ割期間に集中。クリアコンタクトセットが年商の31%を担う意外な主力商品。</p>
+  </div>
+
+  <div class="grid4" style="margin-bottom:1.5rem">
+    <div class="card"><div class="card-label">年間受注高</div><div class="card-val c-q">3,058万</div><div class="card-sub">メガ割4回が柱</div></div>
+    <div class="card"><div class="card-label">メガ割42日の注文</div><div class="card-val c-r">58.6%</div><div class="card-sub">年間注文15,344件の集中度</div></div>
+    <div class="card"><div class="card-label">年間最高CVR日</div><div class="card-val c-g">14.3%</div><div class="card-sub">25/12/03 注文552件</div></div>
+    <div class="card"><div class="card-label">リピーター率（26/02）</div><div class="card-val c-q">33.4%</div><div class="card-sub">25/03の2.5%から13倍成長</div></div>
+  </div>
+
+  <div class="chart-box reveal">
+    <div class="chart-title">月別受注高推移（メガ割月はハイライト）</div>
+    <div class="chart-subtitle">平常月平均139万 vs メガ割月平均509万（3.7倍の差）</div>
+    <div class="chart-wrap" style="height:220px"><canvas id="q10_main"></canvas></div>
+  </div>
+
+  <div class="grid2 reveal" style="margin-top:1rem">
+    <div class="chart-box">
+      <div class="chart-title">広告あり日 vs なし日（365日分）</div>
+      <div class="chart-subtitle">広告稼働率30%→70%に上げるだけで年商が大幅改善</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="q10_ad"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">リピーター率・フォロワー成長</div>
+      <div class="chart-subtitle">ブランド基盤が着実に育っている</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="q10_repeat"></canvas></div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem" class="reveal">
+    <h3 style="font-size:15px;font-weight:500;margin-bottom:1rem">商品別受注高とメガ割依存度</h3>
+    <div class="chart-box">
+      <div class="chart-subtitle">青=メガ割売上、緑=平常月売上。lemi・omyoは平常月でも強い平年安定型商品</div>
+      <div class="legend">
+        <span><span class="ld" style="background:#4f8ef7"></span>メガ割売上</span>
+        <span><span class="ld" style="background:#22c55e"></span>平常月売上</span>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="q10_prod"></canvas></div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem" class="reveal">
+    <h3 style="font-size:15px;font-weight:500;margin-bottom:1rem">Qoo10の核心インサイト</h3>
+    <div class="insight danger">
+      <div class="insight-head">① 広告稼働率が30%しかない = 最大の機会損失</div>
+      <div class="insight-body">パワーランクアップ広告あり日：平均訪問者1,541人・注文96件。広告なし日：485人・19件（5倍の差）。年間254日が「広告なし」で放置されている。平常日を10,000Q/日に固定するだけで年商1,500〜2,000万円上乗せの試算。</div>
+    </div>
+    <div class="insight danger">
+      <div class="insight-head">② ramu24単品広告はROAS84%（赤字）—今すぐ停止</div>
+      <div class="insight-body">75,315Qcashの広告費に対して売上63,206円。完全な逆ざや。同商品の「2箱セット（ROAS463%）」と「cleav×4箱（ROAS1,642%）」に予算移行で即改善。</div>
+    </div>
+    <div class="insight success">
+      <div class="insight-head">③ クリアコンタクトがQoo10年商の31%を担う主役</div>
+      <div class="insight-body">cleav単品・×2箱・×4箱で952万円。PV→購入CVRが21%と業界最高水準。SHOPLISTでは売れないこのカテゴリがQoo10では最強商品。</div>
+    </div>
+    <div class="insight success">
+      <div class="insight-head">④ 検索KW「コンタクトレンズ 1day」系の購入率が17〜24%</div>
+      <div class="insight-body">「カラコン激安」（2.9%）の6〜8倍。クリアコンタクト目的のユーザーはそのまま購入まで進む。キーワードプラス広告をこのワードに特化することで広告効率が大幅向上。</div>
+    </div>
+    <div class="insight info">
+      <div class="insight-head">⑤ メガ割最終日前後に注文が急増（駆け込み需要）</div>
+      <div class="insight-body">25/12/03（メガ割3日目）が年間最高売上139.6万円。最終2日前に広告費を倍増する「駆け込み強化戦術」が高ROASで効果的。</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ========== COMPARE ========== -->
+<div class="section reveal" id="compare">
+  <div class="section-header">
+    <div class="section-num">03 — CHANNEL COMPARE</div>
+    <h2 class="section-title">2チャネル 徹底比較</h2>
+    <p class="section-desc">SHOPLISTとQoo10は客層・商品ニーズ・戦略が全く異なる。役割を明確に分けることで両チャネルの最大化が実現する。</p>
+  </div>
+
+  <div class="chart-box reveal" style="margin-bottom:1.5rem">
+    <div class="chart-title">月別受注高 SHOPLIST vs Qoo10（並列比較）</div>
+    <div class="legend">
+      <span><span class="ld" style="background:#4f8ef7"></span>SHOPLIST</span>
+      <span><span class="ld" style="background:#f97316"></span>Qoo10</span>
+    </div>
+    <div class="chart-wrap" style="height:220px"><canvas id="cmp_main"></canvas></div>
+  </div>
+
+  <div class="reveal" style="overflow-x:auto">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>比較項目</th>
+          <th><span class="ch-badge ch-s">SHOPLIST</span></th>
+          <th><span class="ch-badge ch-q">Qoo10</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>売上の性質</td><td class="win">毎日コンスタント型</td><td>メガ割爆発型（平常月弱い）</td></tr>
+        <tr><td>月商規模</td><td>260万円（直近平均）</td><td>255万円（年間平均）<br><small style="color:var(--text3)">※メガ割除くと139万</small></td></tr>
+        <tr><td>客単価</td><td>2,642円/注文</td><td class="win">3,255〜8,566円（メガ割月）</td></tr>
+        <tr><td>主力商品</td><td>ワンデー10枚・1,400〜1,600円</td><td class="win">クリアコンタクトセット・2+1セット</td></tr>
+        <tr><td>検索キーワード</td><td>ナチュラル・アンバサダー名</td><td>激安・コスプレ・水光・グレー</td></tr>
+        <tr><td>CVR</td><td class="win">6.63%（改善中・安定）</td><td>3〜8%（メガ割で急変動）</td></tr>
+        <tr><td>広告</td><td>スピード便・検索順位中心</td><td class="win">5種類出稿・ROAS794%</td></tr>
+        <tr><td>リピーター</td><td>SHOPLISTアカウント経由</td><td class="win">33%・フォロワー211人（成長中）</td></tr>
+        <tr><td>セット商品</td><td>少数</td><td class="win">55商品（全体の33%）</td></tr>
+        <tr><td>スピード配送</td><td class="win">スピード便制度あり（CVR×1.4倍）</td><td>なし</td></tr>
+        <tr><td>近中期目標月商</td><td>500〜700万円</td><td>600万円（メガ割月）×4回</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2 reveal" style="margin-top:1.5rem">
+    <div class="card accent-s">
+      <div class="card-head">SHOPLISTが担うべき役割</div>
+      <div class="card-body">「毎月安定した売上の柱」。スピード便×プロパー販売でブランド価値を維持しながら月商を積み上げる。ナチュラル・アンバサダー商品を軸に、ランキング常連化を目指す。</div>
+    </div>
+    <div class="card accent-q">
+      <div class="card-head">Qoo10が担うべき役割</div>
+      <div class="card-body">「メガ割での大量販売・客単価最大化」。クリアコンタクトセット・まとめ買い商品で客単価5,000〜8,000円を狙う。平常月は広告効率を高めてリピーター育成に注力。</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ========== ACTIONS ========== -->
+<div class="section reveal" id="actions">
+  <div class="section-header">
+    <div class="section-num">04 — ACTION PLAN</div>
+    <h2 class="section-title">商品別戦略<br>やることリスト</h2>
+    <p class="section-desc">データから導出した優先度付きアクション。高優先度から順に実行する。</p>
+  </div>
+
+  <h3 style="font-size:14px;font-weight:500;margin-bottom:1rem"><span class="ch-badge ch-s">SHOPLIST</span> アクションリスト</h3>
+  <div class="chart-box reveal" style="overflow-x:auto">
+    <table class="action-table">
+      <thead><tr><th>アクション</th><th>対象商品</th><th>期待効果</th><th>優先度</th></tr></thead>
+      <tbody>
+        <tr><td>omyoのスピード便投入</td><td>omyo（月平均7.6万・spd率1%）</td><td>CVR×1.4倍 → 月商+3万円</td><td><span class="priority p-high">最優先</span></td></tr>
+        <tr><td>unrlaのスピード便を50%以上に</td><td>unrla（月平均16.3万・spd率10%）</td><td>ランキングTOP50入り維持 → +6.5万円/月</td><td><span class="priority p-high">最優先</span></td></tr>
+        <tr><td>bmot-1dスピード便在庫を常時600個維持</td><td>bmot-1d（月平均24万・spd率32%）</td><td>月商30万円台安定化</td><td><span class="priority p-high">最優先</span></td></tr>
+        <tr><td>lemiのスピード便在庫1,000個以上維持</td><td>lemi（spd率83%・上昇トレンド）</td><td>2602月商21.8万のトレンド継続</td><td><span class="priority p-mid">高</span></td></tr>
+        <tr><td>新商品を予約便で月1〜2本投入</td><td>新規ワンデー10枚・1,400〜1,599円</td><td>訪問者回復・話題性創出</td><td><span class="priority p-mid">高</span></td></tr>
+        <tr><td>プロパー率を78%→50%以上に改善</td><td>全商品</td><td>ブランド価値向上・利益率改善</td><td><span class="priority p-mid">高</span></td></tr>
+        <tr><td>lumia-com・clos1dのスピード便投入</td><td>lumia-com（spd率1%）・clos1d（11%）</td><td>CVR改善 → 各商品+2〜3万円/月</td><td><span class="priority p-low">中</span></td></tr>
+        <tr><td>高度数対応ワンデー商品の新規投入</td><td>新商品（SHOPLISTの穴を埋める）</td><td>オーレンズ対抗・独自需要獲得</td><td><span class="priority p-low">中</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:14px;font-weight:500;margin:2rem 0 1rem"><span class="ch-badge ch-q">Qoo10</span> アクションリスト</h3>
+  <div class="chart-box reveal" style="overflow-x:auto">
+    <table class="action-table">
+      <thead><tr><th>アクション</th><th>対象</th><th>期待効果</th><th>優先度</th></tr></thead>
+      <tbody>
+        <tr><td>ramu24単品広告を即停止</td><td>ramu24（ROAS84%・赤字）</td><td>75,315Q/月の無駄広告費を削減</td><td><span class="priority p-high">緊急</span></td></tr>
+        <tr><td>平常日広告費を10,000Q/日に固定</td><td>パワーランクアップ</td><td>注文19件/日→96件/日へ（試算+5倍）</td><td><span class="priority p-high">最優先</span></td></tr>
+        <tr><td>cleav×4箱を広告のメイン商品に昇格</td><td>set_cleav_4（ROAS1,642%）</td><td>広告売上1位の維持・拡大</td><td><span class="priority p-high">最優先</span></td></tr>
+        <tr><td>メガ割前2週からタイムセール開始</td><td>全商品</td><td>お気に入りユーザーの事前囲い込み</td><td><span class="priority p-mid">高</span></td></tr>
+        <tr><td>genuv商品ページの改善</td><td>genuv（PV2万・CVR2.2%）</td><td>CVRを5%に改善 → 月商42万→100万へ</td><td><span class="priority p-mid">高</span></td></tr>
+        <tr><td>キーワードプラスを「コンタクト系」に特化</td><td>コンタクトレンズ1day・クリアコンタクト系</td><td>購入率17〜24%の高効率KWへ集中</td><td><span class="priority p-mid">高</span></td></tr>
+        <tr><td>メガ割最終2日前に広告費を倍増</td><td>全メガ割商品</td><td>駆け込み需要を最大化（12/03の実績）</td><td><span class="priority p-low">中</span></td></tr>
+        <tr><td>cleav×6箱セットの新規出品</td><td>新商品（客単価7,000円超）</td><td>客単価のさらなる引き上げ</td><td><span class="priority p-low">中</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ========== ROADMAP ========== -->
+<div class="section reveal" id="roadmap">
+  <div class="section-header">
+    <div class="section-num">05 — ROADMAP</div>
+    <h2 class="section-title">月別アクションプラン</h2>
+    <p class="section-desc">26年3月〜9月のロードマップ。5販路合計月商1億円を中長期目標に、まずSHOPLIST+Qoo10の合計月商を1,000万円に引き上げることを近期目標とする。</p>
+  </div>
+
+  <div class="grid2 reveal" style="margin-bottom:2rem">
+    <div class="card">
+      <div class="card-label">近期目標（3〜6ヶ月）</div>
+      <div class="card-val" style="font-size:20px">SHOPLIST+Qoo10<br>合計 <span class="c-g">月商1,000万円</span></div>
+      <div class="card-sub">SHOPLIST500万 + Qoo10メガ割600万</div>
+    </div>
+    <div class="card">
+      <div class="card-label">改善後年商シミュレーション</div>
+      <div class="card-val" style="font-size:20px">SHOPLIST <span class="c-s">5,000万</span><br>Qoo10 <span class="c-q">4,800万</span></div>
+      <div class="card-sub">2チャネル合計 約9,800万円（現状5,884万比+67%）</div>
+    </div>
+  </div>
+
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-dot both"></div>
+      <div class="tl-month">2026 / 03〜04</div>
+      <div class="tl-title">スピード便緊急投入 &amp; Qoo10赤字広告停止</div>
+      <div class="tl-body">
+        <span class="ch-badge ch-s">SHOPLIST</span> omyo（100〜150個）・unrla（400〜500個）をSHOPLIST倉庫に即時投入。bmot-1dの倉庫在庫600〜800個を常時確保。<br>
+        <span class="ch-badge ch-q">Qoo10</span> ramu24単品広告を即停止。平常日広告費を10,000Q/日に設定。genuv商品ページをリニューアル。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot s"></div>
+      <div class="tl-month">2026 / 04〜05</div>
+      <div class="tl-title">SHOPLIST プロパー改善 &amp; Qoo10メガ割準備開始</div>
+      <div class="tl-body">
+        <span class="ch-badge ch-s">SHOPLIST</span> セール率78%→目標50%以下へ価格設定見直し。clos1d・flryのプロパー価格を1,400〜1,500円帯に統一。<br>
+        <span class="ch-badge ch-q">Qoo10</span> 次回メガ割（6月）に向けてパワーランクアップ広告を20,000Q/日に増額。cleav系を前面に。タイムセール開始。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot both"></div>
+      <div class="tl-month">2026 / 05〜06</div>
+      <div class="tl-title">SHOPLIST 新商品投入 &amp; Qoo10メガ割本番</div>
+      <div class="tl-body">
+        <span class="ch-badge ch-s">SHOPLIST</span> ワンデー10枚・1,400〜1,599円・アンバサダーありの新商品を予約便で1〜2本投入。5〜6月はSHOPLISTのピーク（昨年2506：364万）。目標350〜400万円。<br>
+        <span class="ch-badge ch-q">Qoo10</span> 6月メガ割本番。cleav×4箱・2+1セットに予算集中。Mega AD開始。最終2日前に広告費倍増。目標：メガ割月600万円。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot q"></div>
+      <div class="tl-month">2026 / 07〜08</div>
+      <div class="tl-title">夏季在庫対策 &amp; Qoo10コスプレ強化</div>
+      <div class="tl-body">
+        <span class="ch-badge ch-s">SHOPLIST</span> 昨年8月に売上急落（190万）。7月中に8〜9月分のスピード便在庫を先行投入。夏の在庫切れを防ぐ。<br>
+        <span class="ch-badge ch-q">Qoo10</span> 夏はコスプレ系（gi1d・shu・shut）の需要期。ハロウィン需要を先取りしたタイムセール設計。9月メガ割準備。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot both"></div>
+      <div class="tl-month">2026 / 09</div>
+      <div class="tl-title">Qoo10最大メガ割 &amp; SHOPLIST秋新商品</div>
+      <div class="tl-body">
+        <span class="ch-badge ch-q">Qoo10</span> 昨年最高月（589万）を超える600万円超を目標。9/1〜12日の12日間フル稼働。<br>
+        <span class="ch-badge ch-s">SHOPLIST</span> 秋の新商品（シリコンHG素材・高度数対応）を予約便で投入し話題性を作る。
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:3rem">
+    <h3 style="font-size:15px;font-weight:500;margin-bottom:1rem">5販路 合計月商1億円への道筋（概算）</h3>
+    <div class="chart-box" style="overflow-x:auto">
+      <table class="cmp-table">
+        <thead><tr><th>チャネル</th><th>現状月商</th><th>近期目標（6ヶ月後）</th><th>中期目標（1年後）</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ch-badge ch-s">SHOPLIST</span></td><td>260万（直近平均）</td><td class="win">500万（スピード便+新商品）</td><td class="win">800万（モールタイアップ+新商品）</td></tr>
+          <tr><td><span class="ch-badge ch-q">Qoo10</span></td><td>255万（年間平均）</td><td class="win">600万（メガ割月） / 300万（平常月）</td><td class="win">700万（メガ割） / 350万（平常）</td></tr>
+          <tr><td>楽天</td><td>未分析</td><td>—</td><td>—</td></tr>
+          <tr><td>Yahoo</td><td>未分析</td><td>—</td><td>—</td></tr>
+          <tr><td>自社EC</td><td>未分析</td><td>—</td><td>—</td></tr>
+          <tr style="background:var(--bg3)"><td style="color:var(--text);font-weight:700">合計</td><td style="color:var(--text);font-weight:700">515万〜（2チャネルのみ）</td><td style="color:var(--accent-green);font-weight:700">1,000万〜（2チャネル）</td><td style="color:var(--accent-green);font-weight:700">1億円（5チャネル合計）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== ROUTINE ========== -->
+<hr class="divider">
+<div class="section reveal" id="routine">
+  <div class="section-header">
+    <div class="section-num">06 — ROUTINE OPS</div>
+    <h2 class="section-title">売上達成のための<br>ルーティン業務</h2>
+    <p class="section-desc">立てた計画を着実に実行するための、チャネル別・頻度別アクションリスト。チェックをつけながら進捗を管理できます。チェック状態は次回アクセス時も保持されます。</p>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div style="display:flex;gap:8px;margin-bottom:2rem;flex-wrap:wrap">
+    <button class="rt-filter active" onclick="filterRoutine('all')">すべて</button>
+    <button class="rt-filter" onclick="filterRoutine('shoplist')">SHOPLIST</button>
+    <button class="rt-filter" onclick="filterRoutine('qoo10')">Qoo10</button>
+    <button class="rt-filter" onclick="filterRoutine('daily')">日次</button>
+    <button class="rt-filter" onclick="filterRoutine('weekly')">週次</button>
+    <button class="rt-filter" onclick="filterRoutine('monthly')">月次</button>
+    <button class="rt-reset" onclick="resetAll()">チェックをリセット</button>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div style="margin-bottom:2rem">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:6px">
+      <span>全体進捗</span>
+      <span id="progress-text">0 / 0 完了</span>
+    </div>
+    <div style="background:var(--bg3);border-radius:4px;height:6px"><div id="progress-bar" style="height:6px;border-radius:4px;background:linear-gradient(90deg,#22c55e,#4f8ef7);width:0%;transition:width 0.4s ease"></div></div>
+  </div>
+
+  <!-- SHOPLIST DAILY -->
+  <div class="rt-group" data-channel="shoplist" data-freq="daily">
+    <div class="rt-group-header">
+      <span class="ch-badge ch-s">SHOPLIST</span>
+      <span class="rt-freq-badge daily">日次</span>
+      <span class="rt-group-title">毎日チェック</span>
+      <span class="rt-group-count" id="count-sl-daily"></span>
+    </div>
+    <div class="rt-items">
+      <div class="rt-item" data-id="sl-d-1" data-channel="shoplist" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="sl-d-1">
+        <label for="sl-d-1">
+          <span class="rt-item-title">前日受注高・受注件数の確認</span>
+          <span class="rt-item-desc">管理画面で前日実績を確認。月間ペース（目標日割）との乖離をチェック。乖離が10%超なら当日の施策見直し。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-d-2" data-channel="shoplist" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="sl-d-2">
+        <label for="sl-d-2">
+          <span class="rt-item-title">スピード便在庫の残数確認（主力4商品）</span>
+          <span class="rt-item-desc">bmot-1d（600個以上）・unrla（400個以上）・lemi（1,000個以上）・omyo（100個以上）。基準を下回っていたら即日補充指示。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-d-3" data-channel="shoplist" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="sl-d-3">
+        <label for="sl-d-3">
+          <span class="rt-item-title">在庫切れ・公開停止商品のチェック</span>
+          <span class="rt-item-desc">在庫数が0になっている商品を確認。在庫切れは検索順位の急落に直結。即日対応が必要。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-d-4" data-channel="shoplist" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="sl-d-4">
+        <label for="sl-d-4">
+          <span class="rt-item-title">訪問者数・CVRの前日比確認</span>
+          <span class="rt-item-desc">訪問者が先週同曜日比▲20%以上 or CVRが前日比▲1pt以上の場合は原因調査（競合の値下げ・ランキング変動など）。</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPLIST WEEKLY -->
+  <div class="rt-group" data-channel="shoplist" data-freq="weekly">
+    <div class="rt-group-header">
+      <span class="ch-badge ch-s">SHOPLIST</span>
+      <span class="rt-freq-badge weekly">週次</span>
+      <span class="rt-group-title">週1回（月曜推奨）</span>
+      <span class="rt-group-count" id="count-sl-weekly"></span>
+    </div>
+    <div class="rt-items">
+      <div class="rt-item" data-id="sl-w-1" data-channel="shoplist" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="sl-w-1">
+        <label for="sl-w-1">
+          <span class="rt-item-title">週次売上集計と目標進捗レビュー</span>
+          <span class="rt-item-desc">週間受注高・受注件数を集計。月間目標に対する進捗率を算出。残り週数で必要な日次売上を逆算して共有。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-w-2" data-channel="shoplist" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="sl-w-2">
+        <label for="sl-w-2">
+          <span class="rt-item-title">ランキング順位の確認（主力商品）</span>
+          <span class="rt-item-desc">bmot-1d・lemi・unrlaのSHOPLISTカラコンカテゴリ内順位を確認。前週比で順位が下がっている場合はスピード便在庫・価格を見直す。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-w-3" data-channel="shoplist" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="sl-w-3">
+        <label for="sl-w-3">
+          <span class="rt-item-title">お気に入り数のモニタリング（主力商品）</span>
+          <span class="rt-item-desc">lemi・bmot-1d・unrlaのお気に入り数推移を確認。週次で増加トレンドにあるか。競合商品のお気に入り急増にも注意。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-w-4" data-channel="shoplist" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="sl-w-4">
+        <label for="sl-w-1">
+          <span class="rt-item-title">競合TOP商品の価格・在庫状況チェック</span>
+          <span class="rt-item-desc">モアコンタクトTOP5商品（オーレンズ・フルーリー・チューズミー等）の販売価格と在庫状況を確認。値下げや品切れがあれば自社の対応を検討。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-w-5" data-channel="shoplist" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="sl-w-5">
+        <label for="sl-w-5">
+          <span class="rt-item-title">プロパー・セール比率の確認と調整</span>
+          <span class="rt-item-desc">週次のプロパー率を確認。セール率が80%を超えている場合は一部商品の割引率を下げる。目標：プロパー率50%以上。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-w-6" data-channel="shoplist" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="sl-w-6">
+        <label for="sl-w-6">
+          <span class="rt-item-title">週末（金〜日）に向けたクーポン・施策設定</span>
+          <span class="rt-item-desc">日曜の受注が最も高い（平均12.5万円）。金曜夕方にSHOPLISTクーポンを設定し週末の流入を最大化。翌週の曜日別データと比較して効果測定。</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPLIST MONTHLY -->
+  <div class="rt-group" data-channel="shoplist" data-freq="monthly">
+    <div class="rt-group-header">
+      <span class="ch-badge ch-s">SHOPLIST</span>
+      <span class="rt-freq-badge monthly">月次</span>
+      <span class="rt-group-title">月初（1〜3日中に実施）</span>
+      <span class="rt-group-count" id="count-sl-monthly"></span>
+    </div>
+    <div class="rt-items">
+      <div class="rt-item" data-id="sl-m-1" data-channel="shoplist" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="sl-m-1">
+        <label for="sl-m-1">
+          <span class="rt-item-title">月次売上レポートの作成と共有</span>
+          <span class="rt-item-desc">受注高・受注件数・CVR・訪問者数・客単価を前月比・目標比で整理。スピード便率と予約便稼働状況も必ず記載。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-m-2" data-channel="shoplist" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="sl-m-2">
+        <label for="sl-m-2">
+          <span class="rt-item-title">翌月の商品別スピード便在庫計画の策定</span>
+          <span class="rt-item-desc">主力4商品（bmot-1d・unrla・lemi・omyo）の翌月必要スピード便在庫数を算出。前月の消費量×1.2倍を目安にSHOPLIST倉庫へ納入計画を立てる。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-m-3" data-channel="shoplist" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="sl-m-3">
+        <label for="sl-m-3">
+          <span class="rt-item-title">新商品・予約便の投入計画確認</span>
+          <span class="rt-item-desc">翌月に投入予定の新商品があるか確認。ワンデー10枚・1,400〜1,599円・アンバサダーありが理想条件。ピーク月（4〜7月）の前に仕込む。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-m-4" data-channel="shoplist" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="sl-m-4">
+        <label for="sl-m-4">
+          <span class="rt-item-title">前月お気に入りランキング（SHOPLIST全体）の確認</span>
+          <span class="rt-item-desc">SHOPLISTの月別お気に入りTOP50を確認。自社商品のランクイン状況と、急上昇している競合商品の特徴を分析して翌月の施策に反映。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="sl-m-5" data-channel="shoplist" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="sl-m-5">
+        <label for="sl-m-5">
+          <span class="rt-item-title">CVRが低い商品の商品ページ改善</span>
+          <span class="rt-item-desc">月次データでCVRが低い商品（特にomyo・lumia-com）の商品画像・説明文を見直す。競合商品と比較して見劣りしている点を改善。</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- QOO10 DAILY -->
+  <div class="rt-group" data-channel="qoo10" data-freq="daily">
+    <div class="rt-group-header">
+      <span class="ch-badge ch-q">Qoo10</span>
+      <span class="rt-freq-badge daily">日次</span>
+      <span class="rt-group-title">毎日チェック</span>
+      <span class="rt-group-count" id="count-q10-daily"></span>
+    </div>
+    <div class="rt-items">
+      <div class="rt-item" data-id="q10-d-1" data-channel="qoo10" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="q10-d-1">
+        <label for="q10-d-1">
+          <span class="rt-item-title">前日受注高・広告ROASの確認</span>
+          <span class="rt-item-desc">管理画面で前日の受注高とROASを確認。ROAS300%を下回る商品は翌日の予算を減額。ROAS1000%超の商品は予算を増額して露出を上げる。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-d-2" data-channel="qoo10" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="q10-d-2">
+        <label for="q10-d-2">
+          <span class="rt-item-title">広告費の確認（パワーランクアップが稼働しているか）</span>
+          <span class="rt-item-desc">パワーランクアップ広告が最低10,000 Qcash/日で稼働しているか確認。メガ割前2週間は20,000 Q/日以上に設定。ramu24単品は広告OFF維持。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-d-3" data-channel="qoo10" data-freq="daily">
+        <input type="checkbox" class="rt-check" id="q10-d-3">
+        <label for="q10-d-3">
+          <span class="rt-item-title">在庫・販売ステータスの確認</span>
+          <span class="rt-item-desc">cleav系（単品・2箱・4箱）の在庫が十分にあるか確認。Qoo10の在庫は「在庫切れ→広告効果消失」に直結するため特に注意。</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- QOO10 WEEKLY -->
+  <div class="rt-group" data-channel="qoo10" data-freq="weekly">
+    <div class="rt-group-header">
+      <span class="ch-badge ch-q">Qoo10</span>
+      <span class="rt-freq-badge weekly">週次</span>
+      <span class="rt-group-title">週1回（月曜推奨）</span>
+      <span class="rt-group-count" id="count-q10-weekly"></span>
+    </div>
+    <div class="rt-items">
+      <div class="rt-item" data-id="q10-w-1" data-channel="qoo10" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="q10-w-1">
+        <label for="q10-w-1">
+          <span class="rt-item-title">週次広告パフォーマンスレビュー</span>
+          <span class="rt-item-desc">商品別ROAS・クリック率・購入数を週次で集計。前週比でROASが下がっている商品は入札単価や広告文を見直す。cleav×4箱のROASが1,000%を下回っていないか確認。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-w-2" data-channel="qoo10" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="q10-w-2">
+        <label for="q10-w-2">
+          <span class="rt-item-title">お気に入り数・カート数の前週比確認</span>
+          <span class="rt-item-desc">lemi（1,596）・omyo（1,423）・cleav（1,281）・gi1d（1,918）のお気に入り数推移を確認。増加が止まっている商品は商品ページのリフレッシュを検討。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-w-3" data-channel="qoo10" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="q10-w-3">
+        <label for="q10-w-3">
+          <span class="rt-item-title">CVRが低い商品の特定と改善対応</span>
+          <span class="rt-item-desc">週次CVR（PV→購入率）が2%以下の商品をリストアップ。genuv（現状CVR2.2%）を最優先に、商品画像・価格・説明文を競合と比較して改善点を洗い出す。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-w-4" data-channel="qoo10" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="q10-w-4">
+        <label for="q10-w-4">
+          <span class="rt-item-title">タイムセール・スマートセールスの設定確認</span>
+          <span class="rt-item-desc">タイムセールが適切な商品・時間帯に設定されているか確認。スマートセールスの自動最適化が正常に動作しているか（ROAS800%以上を維持しているか）確認。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-w-5" data-channel="qoo10" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="q10-w-5">
+        <label for="q10-w-5">
+          <span class="rt-item-title">メガ割まで残り何週かの確認と準備状況チェック</span>
+          <span class="rt-item-desc">次回メガ割の予定日を確認し、準備フェーズを把握。6週前：広告強化開始 / 2週前：タイムセール・Mega AD開始 / 最終2日前：広告費倍増 のスケジュールを管理。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-w-6" data-channel="qoo10" data-freq="weekly">
+        <input type="checkbox" class="rt-check" id="q10-w-6">
+        <label for="q10-w-6">
+          <span class="rt-item-title">競合商品・価格のチェック</span>
+          <span class="rt-item-desc">Qoo10でカラコン・クリアコンタクトカテゴリの売れ筋ランキングを確認。自社と同価格帯の競合商品の価格変動・新商品投入をウォッチ。</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- QOO10 MONTHLY -->
+  <div class="rt-group" data-channel="qoo10" data-freq="monthly">
+    <div class="rt-group-header">
+      <span class="ch-badge ch-q">Qoo10</span>
+      <span class="rt-freq-badge monthly">月次</span>
+      <span class="rt-group-title">月初（1〜3日中に実施）</span>
+      <span class="rt-group-count" id="count-q10-monthly"></span>
+    </div>
+    <div class="rt-items">
+      <div class="rt-item" data-id="q10-m-1" data-channel="qoo10" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="q10-m-1">
+        <label for="q10-m-1">
+          <span class="rt-item-title">月次売上レポートと広告費収支の作成</span>
+          <span class="rt-item-desc">受注高・純受注高・広告費合計・商品別ROAS・リピーター率・フォロワー数を前月比で整理。メガ割月は日程別の売上分布も記録。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-m-2" data-channel="qoo10" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="q10-m-2">
+        <label for="q10-m-2">
+          <span class="rt-item-title">翌月の広告予算配分の設計</span>
+          <span class="rt-item-desc">平常月：10,000〜15,000 Q/日を基本設定。メガ割前2週間は20,000 Q/日、本番中は30,000 Q/日以上に増額する計画を事前に立てて担当者に共有。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-m-3" data-channel="qoo10" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="q10-m-3">
+        <label for="q10-m-3">
+          <span class="rt-item-title">商品ページのA/Bテスト結果レビュー</span>
+          <span class="rt-item-desc">genuv等CVRが低い商品の改善施策の効果を確認。改善前後のCVR・お気に入り数を比較。効果がない場合は別のアプローチ（価格変更・画像変更）を試みる。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-m-4" data-channel="qoo10" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="q10-m-4">
+        <label for="q10-m-4">
+          <span class="rt-item-title">新規セット商品・バリエーション追加の検討</span>
+          <span class="rt-item-desc">cleav×6箱など単価を上げられる新しいセット商品の追加を検討。前月の商品別販売データで伸びている商品の派生商品（大容量・セット）を優先。</span>
+        </label>
+      </div>
+      <div class="rt-item" data-id="q10-m-5" data-channel="qoo10" data-freq="monthly">
+        <input type="checkbox" class="rt-check" id="q10-m-5">
+        <label for="q10-m-5">
+          <span class="rt-item-title">リピーター向けフォロワー施策の実施</span>
+          <span class="rt-item-desc">月1回、フォロワー・お気に入り登録者向けの限定クーポンを配布。特に次のメガ割2週前は必ず実施。フォロワー数の月次推移を記録（目標：毎月+30人以上）。</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="reveal" style="margin-top:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:1rem;color:var(--text)">ルーティン業務 サマリー</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;font-size:12px">
+      <div>
+        <div style="color:var(--text3);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;margin-bottom:0.5rem">日次（毎日）</div>
+        <div style="color:var(--text2)">SHOPLIST 4項目<br>Qoo10 3項目<br>合計 <strong style="color:var(--text)">7項目/日</strong></div>
+      </div>
+      <div>
+        <div style="color:var(--text3);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;margin-bottom:0.5rem">週次（週1回）</div>
+        <div style="color:var(--text2)">SHOPLIST 6項目<br>Qoo10 6項目<br>合計 <strong style="color:var(--text)">12項目/週</strong></div>
+      </div>
+      <div>
+        <div style="color:var(--text3);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;margin-bottom:0.5rem">月次（月1回）</div>
+        <div style="color:var(--text2)">SHOPLIST 5項目<br>Qoo10 5項目<br>合計 <strong style="color:var(--text)">10項目/月</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:0.5rem">アイトルテ EC販売戦略レポート — SHOPLIST &amp; Qoo10 分析 2025.03–2026.02</div>
+  <div>Generated by Claude · Data analyzed: 100+ files · 365 days</div>
+</footer>
+
+<script>
+// ============ CHART.JS SETUP ============
+const ML = ['25/3','25/4','25/5','25/6','25/7','25/8','25/9','25/10','25/11','25/12','26/1','26/2'];
+const gridColor = 'rgba(255,255,255,0.05)';
+const base = {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:10},autoSkip:false}},y:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:10}}}}};
+
+// SHOPLIST MAIN
+new Chart(document.getElementById('sl_main'),{
+  type:'bar',
+  data:{labels:ML,datasets:[
+    {label:'受注高',data:[162,253,304,364,350,191,169,205,172,137,280,239],backgroundColor:d=>d.raw===364?'#4f8ef7':'rgba(79,142,247,0.4)',yAxisID:'y1',order:2,borderRadius:3},
+    {label:'訪問者',data:[161,211,267,249,264,186,157,142,119,115,164,131],type:'line',borderColor:'#f97316',pointRadius:2,tension:0.4,yAxisID:'y1',fill:false,order:1},
+    {label:'CVR',data:[3.89,4.30,4.03,5.29,4.74,3.53,4.01,4.89,4.93,4.16,6.36,6.63],type:'line',borderColor:'#22c55e',pointRadius:2,tension:0.4,yAxisID:'y2',fill:false,order:0}
+  ]},
+  options:{...base,scales:{x:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:10},autoSkip:false}},y1:{position:'left',ticks:{color:'#555b6e',font:{size:10},callback:v=>v+''},grid:{color:gridColor}},y2:{position:'right',min:0,max:10,ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'%'},grid:{display:false}}}}
+});
+
+// SHOPLIST PROPER
+new Chart(document.getElementById('sl_proper'),{
+  type:'bar',
+  data:{labels:ML,datasets:[
+    {label:'プロパー',data:[64,38,31,17,25,33,47,64,37,61,21,22],backgroundColor:'rgba(79,142,247,0.7)',stack:'s'},
+    {label:'セール',data:[36,62,69,83,75,67,53,36,63,39,79,78],backgroundColor:'rgba(239,68,68,0.7)',stack:'s'}
+  ]},
+  options:{...base,scales:{x:{stacked:true,grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:9},autoSkip:false}},y:{stacked:true,max:100,ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'%'},grid:{color:gridColor}}}}
+});
+
+// SHOPLIST STOCK
+new Chart(document.getElementById('sl_stock'),{
+  type:'bar',
+  data:{labels:ML,datasets:[
+    {label:'スピード',data:[32.9,24.7,18.1,24.6,25.8,17.5,18.5,11.2,8.5,18.8,18.6,20.8],backgroundColor:'rgba(79,142,247,0.7)',stack:'s'},
+    {label:'通常',data:[39.1,44.2,47.8,42.8,48.2,50.5,58.2,57.7,57.1,65.0,79.1,79.0],backgroundColor:'rgba(34,197,94,0.5)',stack:'s'},
+    {label:'予約',data:[28.0,31.1,34.1,32.6,26.0,32.0,23.3,31.0,34.4,16.1,2.3,0.2],backgroundColor:'rgba(234,179,8,0.7)',stack:'s'}
+  ]},
+  options:{...base,scales:{x:{stacked:true,grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:9},autoSkip:false}},y:{stacked:true,max:100,ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'%'},grid:{color:gridColor}}}}
+});
+
+// SHOPLIST VS COMPETITOR
+new Chart(document.getElementById('sl_vs'),{
+  type:'bar',
+  data:{
+    labels:['オーレンズ\n(競合1位)','フルーリー\n(競合)','フランミー\n(競合)','エバーカラー\n(競合)','チューズミー\n(競合)','bmot-1d\n(自社1位)','lemi\n(自社2位)','unrla\n(自社3位)'],
+    datasets:[{data:[5948,3613,3346,3289,2494,340,105,51],backgroundColor:['#ef4444','#ef4444','#ef4444','#ef4444','#ef4444','#4f8ef7','#4f8ef7','#4f8ef7'],borderRadius:3}]
+  },
+  options:{...base,scales:{x:{grid:{display:false},ticks:{color:'#555b6e',font:{size:9}}},y:{ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'万'},grid:{color:gridColor}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:d=>d.raw+'万円'}}}}
+});
+
+// SHOPLIST PRODUCT LIST
+const slProds=[
+  {id:'bmot-1d',name:'ベイビーモテコン 1day',sales:24.0,spd:32,col:'#4f8ef7'},
+  {id:'unrla',name:'アンローラ',sales:16.3,spd:10,col:'#22c55e'},
+  {id:'lemi',name:'ルミュー',sales:15.1,spd:83,col:'#22c55e'},
+  {id:'omyo',name:'オマイオ マンスリー',sales:7.6,spd:1,col:'#ef4444'},
+  {id:'riri',name:'リリバニー',sales:6.2,spd:28,col:'#eab308'},
+  {id:'cmot-u1m',name:'超モテコン ウルトラ M',sales:12.3,spd:27,col:'#eab308'},
+  {id:'lumia-com',name:'ルミア コンフォート',sales:3.0,spd:1,col:'#ef4444'},
+  {id:'clos1d',name:'カラーズワンデー',sales:1.9,spd:11,col:'#ef4444'},
+];
+const slDiv = document.getElementById('sl_prod_list');
+slProds.forEach(p=>{
+  const pct=Math.round(p.spd);
+  const spdColor=p.spd<15?'#ef4444':p.spd<40?'#eab308':'#22c55e';
+  slDiv.innerHTML+=`<div class="prod-row">
+    <span class="prod-id">${p.id}</span>
+    <span class="prod-name">${p.name}</span>
+    <div style="width:120px;flex-shrink:0">
+      <div style="font-size:10px;color:#555b6e;margin-bottom:2px">spd率 ${p.spd}%</div>
+      <div style="background:#1a1e28;border-radius:2px;height:4px;width:120px"><div style="width:${pct}%;height:4px;border-radius:2px;background:${spdColor}"></div></div>
+    </div>
+    <span class="prod-val">${p.sales}万</span>
+  </div>`;
+});
+
+// QOO10 MAIN
+const isMega=[false,false,false,true,false,false,true,false,true,true,false,false];
+new Chart(document.getElementById('q10_main'),{
+  type:'bar',
+  data:{labels:ML,datasets:[{data:[70,57,102,434,163,135,589,173,529,384,129,292],backgroundColor:ML.map((_,i)=>isMega[i]?'#f97316':'rgba(249,115,22,0.35)'),borderRadius:3}]},
+  options:{...base,plugins:{legend:{display:false},tooltip:{callbacks:{label:d=>d.raw+'万円'+(isMega[d.dataIndex]?' ★メガ割':'')}}},scales:{x:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:10},autoSkip:false}},y:{ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'万'},grid:{color:gridColor}}}}
+});
+
+// QOO10 AD COMPARISON
+new Chart(document.getElementById('q10_ad'),{
+  type:'bar',
+  data:{labels:['平均訪問者（人）','平均注文（件）','平均CVR（×10）'],datasets:[
+    {label:'広告なし日（254日）',data:[485,19,35.7],backgroundColor:'rgba(85,91,110,0.6)'},
+    {label:'広告あり日（111日）',data:[1541,96,48.4],backgroundColor:'rgba(249,115,22,0.7)'}
+  ]},
+  options:{...base,plugins:{legend:{position:'top',labels:{color:'#9095a8',font:{size:10},boxWidth:8}}},scales:{x:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:10}}},y:{ticks:{color:'#555b6e',font:{size:10}},grid:{color:gridColor}}}}
+});
+
+// QOO10 REPEAT
+new Chart(document.getElementById('q10_repeat'),{
+  type:'line',
+  data:{labels:ML,datasets:[
+    {label:'リピーター率',data:[2.5,7.4,6.9,4.2,13.5,18.4,10.2,24.6,20.4,21.3,39.8,33.4],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,0.08)',fill:true,tension:0.4,pointRadius:2,yAxisID:'y1'},
+    {label:'フォロワー数',data:[26,28,38,53,61,69,104,118,140,153,169,211],borderColor:'#4f8ef7',fill:false,tension:0.4,pointRadius:2,yAxisID:'y2'}
+  ]},
+  options:{...base,plugins:{legend:{position:'top',labels:{color:'#9095a8',font:{size:10},boxWidth:8}}},scales:{x:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:9},autoSkip:false}},y1:{position:'left',min:0,max:50,ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'%'},grid:{color:gridColor}},y2:{position:'right',ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'人'},grid:{display:false}}}}
+});
+
+// QOO10 PRODUCT MEGA VS NORMAL
+new Chart(document.getElementById('q10_prod'),{
+  type:'bar',
+  data:{
+    labels:['cleav×4箱','cleav\n単品','cleav×2箱','ramu24×2','omyo','gi1d','lemi','shu','clos1d','ec1d-n','galnd','genuv'],
+    datasets:[
+      {label:'メガ割売上',data:[287,266,161,133,71,82,35,51,64,33,37,22],backgroundColor:'rgba(79,142,247,0.8)',stack:'s'},
+      {label:'平常月売上',data:[107,78,53,50,77,52,70,33,13,31,13,20],backgroundColor:'rgba(34,197,94,0.6)',stack:'s'}
+    ]
+  },
+  options:{...base,scales:{x:{stacked:true,grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:9}}},y:{stacked:true,ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'万'},grid:{color:gridColor}}},plugins:{legend:{position:'top',labels:{color:'#9095a8',font:{size:10},boxWidth:8}},tooltip:{callbacks:{label:d=>d.dataset.label+': '+d.raw+'万円'}}}}
+});
+
+// COMPARE MAIN
+new Chart(document.getElementById('cmp_main'),{
+  type:'bar',
+  data:{labels:ML,datasets:[
+    {label:'SHOPLIST',data:[162,253,304,364,350,191,169,205,172,137,280,239],backgroundColor:'rgba(79,142,247,0.6)',borderRadius:3},
+    {label:'Qoo10',data:[70,57,102,434,163,135,589,173,529,384,129,292],backgroundColor:'rgba(249,115,22,0.6)',borderRadius:3}
+  ]},
+  options:{...base,plugins:{legend:{position:'top',labels:{color:'#9095a8',font:{size:11},boxWidth:8}}},scales:{x:{grid:{color:gridColor},ticks:{color:'#555b6e',font:{size:10},autoSkip:false}},y:{ticks:{color:'#555b6e',font:{size:10},callback:v=>v+'万'},grid:{color:gridColor}}}}
+});
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+
+// ============ PASSWORD PROTECTION ============
+const PASS = 'itolte2025';
+const SESSION_KEY = 'itolte_auth';
+
+function checkAuth() {
+  if (sessionStorage.getItem(SESSION_KEY) === 'ok') return;
+  const overlay = document.createElement('div');
+  overlay.id = 'auth-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#0d0f14;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem';
+  overlay.innerHTML = `
+    <div style="font-size:11px;font-family:DM Mono,monospace;color:#555b6e;letter-spacing:0.2em">EC ANALYTICS / RESTRICTED ACCESS</div>
+    <div style="font-size:28px;font-weight:700;color:#e8eaf0;letter-spacing:-0.02em">パスワードを入力</div>
+    <div style="display:flex;gap:8px">
+      <input id="pass-input" type="password" placeholder="Password" autocomplete="off"
+        style="background:#13161e;border:1px solid rgba(255,255,255,0.13);color:#e8eaf0;padding:10px 16px;border-radius:8px;font-size:14px;outline:none;font-family:DM Mono,monospace;width:200px"
+        onkeydown="if(event.key==='Enter')tryLogin()">
+      <button onclick="tryLogin()"
+        style="background:#e8eaf0;color:#0d0f14;padding:10px 20px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Mono,monospace">
+        入室
+      </button>
+    </div>
+    <div id="pass-err" style="font-size:12px;color:#ef4444;height:16px"></div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(()=>document.getElementById('pass-input').focus(), 100);
+}
+
+function tryLogin() {
+  const val = document.getElementById('pass-input').value;
+  if (val === PASS) {
+    sessionStorage.setItem(SESSION_KEY, 'ok');
+    const el = document.getElementById('auth-overlay');
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.4s';
+    setTimeout(() => el.remove(), 400);
+  } else {
+    const err = document.getElementById('pass-err');
+    err.textContent = 'パスワードが違います';
+    document.getElementById('pass-input').value = '';
+    document.getElementById('pass-input').focus();
+    setTimeout(() => err.textContent = '', 2000);
+  }
+}
+
+checkAuth();
+
+// ============ ROUTINE LOGIC ============
+function loadChecks() {
+  const saved = JSON.parse(localStorage.getItem('itolte_checks') || '{}');
+  document.querySelectorAll('.rt-check').forEach(cb => {
+    const id = cb.id;
+    if (saved[id]) {
+      cb.checked = true;
+      cb.closest('.rt-item').classList.add('done');
+    }
+    cb.addEventListener('change', () => {
+      cb.closest('.rt-item').classList.toggle('done', cb.checked);
+      saveChecks();
+      updateProgress();
+      updateCounts();
+    });
+  });
+  updateProgress();
+  updateCounts();
+}
+
+function saveChecks() {
+  const state = {};
+  document.querySelectorAll('.rt-check').forEach(cb => { state[cb.id] = cb.checked; });
+  localStorage.setItem('itolte_checks', JSON.stringify(state));
+}
+
+function updateProgress() {
+  const visible = [...document.querySelectorAll('.rt-group:not(.hidden) .rt-check')];
+  const total = visible.length || document.querySelectorAll('.rt-check').length;
+  const done = [...document.querySelectorAll('.rt-check')].filter(c => c.checked).length;
+  const allTotal = document.querySelectorAll('.rt-check').length;
+  document.getElementById('progress-text').textContent = `${done} / ${allTotal} 完了`;
+  document.getElementById('progress-bar').style.width = allTotal > 0 ? (done / allTotal * 100) + '%' : '0%';
+}
+
+function updateCounts() {
+  const groups = {
+    'sl-daily': '[data-channel="shoplist"][data-freq="daily"]',
+    'sl-weekly': '[data-channel="shoplist"][data-freq="weekly"]',
+    'sl-monthly': '[data-channel="shoplist"][data-freq="monthly"]',
+    'q10-daily': '[data-channel="qoo10"][data-freq="daily"]',
+    'q10-weekly': '[data-channel="qoo10"][data-freq="weekly"]',
+    'q10-monthly': '[data-channel="qoo10"][data-freq="monthly"]',
+  };
+  Object.entries(groups).forEach(([key, sel]) => {
+    const grp = document.querySelector('.rt-group' + sel);
+    if (!grp) return;
+    const all = grp.querySelectorAll('.rt-check').length;
+    const done = [...grp.querySelectorAll('.rt-check')].filter(c => c.checked).length;
+    const el = grp.querySelector('.rt-group-count');
+    if (el) el.textContent = `${done}/${all}`;
+  });
+}
+
+function filterRoutine(type) {
+  document.querySelectorAll('.rt-filter').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.rt-group').forEach(g => {
+    const ch = g.dataset.channel;
+    const fr = g.dataset.freq;
+    const show = type === 'all' || type === ch || type === fr;
+    g.classList.toggle('hidden', !show);
+  });
+  updateProgress();
+}
+
+function resetAll() {
+  if (!confirm('すべてのチェックをリセットしますか？')) return;
+  document.querySelectorAll('.rt-check').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.rt-item').classList.remove('done');
+  });
+  localStorage.removeItem('itolte_checks');
+  updateProgress();
+  updateCounts();
+}
+
+document.addEventListener('DOMContentLoaded', loadChecks);
+
+</script>
+</body>
+</html>
