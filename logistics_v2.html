@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物流分析 | アイトルテ調査レポート</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --blue: #58a6ff;
+    --blue-dim: #1c3a5e;
+    --yellow: #d29922;
+    --yellow-dim: #3d2c00;
+    --orange: #e3702c;
+    --orange-dim: #3d1f00;
+    --red: #f85149;
+    --red-dim: #3d0d0d;
+    --green: #3fb950;
+    --green-dim: #0d2e14;
+    --purple: #bc8cff;
+    --purple-dim: #261240;
+    --accent: #ff6b9d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ─── HEADER ─────────────────────────── */
+  .page-header {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(88,166,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--blue);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .page-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .page-title span { color: var(--blue); }
+  .page-subtitle { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── CONCLUSION ──────────────────────── */
+  .conclusion {
+    margin: 20px 32px;
+    background: linear-gradient(135deg, rgba(88,166,255,0.06), rgba(88,166,255,0.02));
+    border: 1px solid rgba(88,166,255,0.3);
+    border-left: 4px solid var(--blue);
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .conclusion-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--blue); margin-bottom: 8px; text-transform: uppercase; }
+  .conclusion-text { font-size: 13px; color: var(--text); line-height: 1.75; }
+  .conclusion-text strong { color: var(--accent); }
+
+  /* ─── PHASE BANNER ────────────────────── */
+  .phase-banner {
+    margin: 0 32px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .phase-card {
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid;
+    text-align: center;
+  }
+  .phase-card.now { background: rgba(63,185,80,0.08); border-color: rgba(63,185,80,0.3); }
+  .phase-card.mid { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.3); }
+  .phase-card.long { background: rgba(188,140,255,0.08); border-color: rgba(188,140,255,0.3); }
+  .phase-label-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+  .phase-card.now .phase-label-tag { color: var(--green); }
+  .phase-card.mid .phase-label-tag { color: var(--blue); }
+  .phase-card.long .phase-label-tag { color: var(--purple); }
+  .phase-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .phase-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ─── KPI CARDS ───────────────────────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 12px;
+    margin: 0 32px 24px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15px 16px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .kpi-card:hover { border-color: var(--blue); transform: translateY(-1px); }
+  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .kpi-card.blue::before { background: var(--blue); }
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-card.orange::before { background: var(--orange); }
+  .kpi-card.red::before { background: var(--red); }
+  .kpi-card.yellow::before { background: var(--yellow); }
+  .kpi-card.purple::before { background: var(--purple); }
+  .kpi-label { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+  .kpi-value { font-size: 22px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .kpi-card.blue .kpi-value { color: var(--blue); }
+  .kpi-card.green .kpi-value { color: var(--green); }
+  .kpi-card.orange .kpi-value { color: var(--orange); }
+  .kpi-card.red .kpi-value { color: var(--red); }
+  .kpi-card.yellow .kpi-value { color: var(--yellow); }
+  .kpi-card.purple .kpi-value { color: var(--purple); }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); }
+  .kpi-sub strong { color: var(--text); }
+  .kpi-note { font-size: 10px; color: rgba(139,148,158,0.7); margin-top: 4px; font-style: italic; }
+
+  /* ─── SECTION ─────────────────────────── */
+  .section { margin: 0 32px 28px; }
+  .section-title {
+    font-size: 14px; font-weight: 700; color: var(--text);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: ''; display: block; width: 3px; height: 16px;
+    background: var(--blue); border-radius: 2px;
+  }
+
+  /* ─── CHART CARDS ─────────────────────── */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .chart-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 900px) { .chart-grid, .chart-grid.three { grid-template-columns: 1fr; } }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .chart-card-title { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chart-wrap { position: relative; height: 220px; }
+  .chart-wrap.tall { height: 280px; }
+
+  /* ─── DATA NOTE ────────────────────────── */
+  .data-note {
+    font-size: 11px; color: var(--text-muted);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .data-note strong { color: var(--text); }
+
+  /* ─── COST TABLE ───────────────────────── */
+  .cost-table { width: 100%; border-collapse: collapse; }
+  .cost-table th {
+    background: var(--surface2); color: var(--text-muted);
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;
+    padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .cost-table td {
+    padding: 9px 12px; font-size: 12px; color: var(--text);
+    border-bottom: 1px solid rgba(48,54,61,0.5); vertical-align: middle;
+  }
+  .cost-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .cost-table .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--blue); }
+  .cost-table .pct { text-align: right; color: var(--text-muted); }
+  .cost-table .warn { color: var(--red); }
+  .cost-table .ok { color: var(--green); }
+  .badge { display: inline-block; border-radius: 12px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+  .badge.neko { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .badge.saga { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge.mega { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .badge.normal { background: rgba(63,185,80,0.15); color: var(--green); }
+
+  /* ─── FINDING CARDS ────────────────────── */
+  .finding-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; }
+  .finding-card { border-radius: 8px; padding: 14px 16px; border: 1px solid; }
+  .finding-card.yellow { background: var(--yellow-dim); border-color: rgba(210,153,34,0.3); }
+  .finding-card.orange { background: var(--orange-dim); border-color: rgba(227,112,44,0.3); }
+  .finding-card.red { background: var(--red-dim); border-color: rgba(248,81,73,0.3); }
+  .finding-card.blue { background: var(--blue-dim); border-color: rgba(88,166,255,0.3); }
+  .finding-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; border-radius: 3px; padding: 2px 7px; margin-bottom: 8px; }
+  .yellow .finding-tag { background: rgba(210,153,34,0.2); color: var(--yellow); }
+  .orange .finding-tag { background: rgba(227,112,44,0.2); color: var(--orange); }
+  .red .finding-tag { background: rgba(248,81,73,0.2); color: var(--red); }
+  .blue .finding-tag { background: rgba(88,166,255,0.2); color: var(--blue); }
+  .finding-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+  .finding-body { font-size: 12px; color: #adbac7; line-height: 1.65; }
+  .finding-body strong { color: var(--text); }
+
+  /* ─── COST PER UNIT ────────────────────── */
+  .cost-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .cost-breakdown-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .cost-breakdown-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .cost-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(48,54,61,0.4); font-size: 12px; }
+  .cost-row:last-child { border-bottom: none; font-weight: 700; color: var(--blue); }
+  .cost-row-label { color: var(--text-muted); }
+  .cost-row-val { font-variant-numeric: tabular-nums; color: var(--text); }
+  .cost-row:last-child .cost-row-val { color: var(--blue); }
+
+  /* ─── ROADMAP ──────────────────────────── */
+  .roadmap { display: flex; flex-direction: column; }
+  .roadmap-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .roadmap-item:last-child { border-bottom: none; }
+  .roadmap-phase { flex-shrink: 0; width: 72px; text-align: center; padding-top: 2px; }
+  .phase-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; border-radius: 4px; padding: 3px 6px; display: inline-block; margin-bottom: 4px; }
+  .phase-pill.now { background: rgba(63,185,80,0.15); color: var(--green); }
+  .phase-pill.mid { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .phase-pill.long { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .phase-time { font-size: 10px; color: var(--text-muted); display: block; }
+  .roadmap-content { flex: 1; }
+  .roadmap-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+  .roadmap-desc { font-size: 12px; color: #adbac7; line-height: 1.65; }
+  .roadmap-impact { margin-top: 7px; font-size: 11px; }
+  .roadmap-impact.green { color: var(--green); }
+  .roadmap-impact.blue { color: var(--blue); }
+  .roadmap-impact.purple { color: var(--purple); }
+
+  /* ─── SOURCE TAG ────────────────────────── */
+  .src { font-size: 10px; color: rgba(139,148,158,0.6); margin-left: 4px; }
+
+  /* ─── FOOTER ────────────────────────────── */
+  .footer {
+    margin: 32px 32px 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="header-badge">📦 LOGISTICS ANALYSIS v2</div>
+  <div class="page-title">物流分析 ― <span>アイトルテ</span></div>
+  <div class="page-subtitle">株式会社intervia ／ 分析期間：2025年3月〜2026年1月（PL実績）・D-4/D-5データ ／ 2026年3月倉庫移転後の方針含む</div>
+</div>
+
+<!-- CONCLUSION -->
+<div class="conclusion">
+  <div class="conclusion-label">▍ 結論</div>
+  <div class="conclusion-text">
+    物流インフラは現状規模（通常月平均1,961件/月・47件/日）には適合しているが、<strong>メガ割ピーク月（最大4,143件）・月商1億円時（974件/日）</strong>を見据えると物流費率の悪化リスクがある。
+    2026年3月の倉庫移転直後のため大規模変更は不適切。まず<strong>①コスト構造の可視化とKPI設定</strong>、次に<strong>②佐川転換検討と在庫自動化</strong>、長期的に<strong>③スケールアップ体制の設計</strong>、という3フェーズで進める。
+  </div>
+</div>
+
+<!-- PHASE BANNER -->
+<div class="phase-banner">
+  <div class="phase-card now">
+    <div class="phase-label-tag">今すぐ（〜3ヶ月）</div>
+    <div class="phase-title">体制把握 & KPI設定</div>
+    <div class="phase-desc">移転直後。まず現倉庫の実コスト・処理能力を把握し、物流費率・1件あたりコストをKPIとして設定・モニタリング開始</div>
+  </div>
+  <div class="phase-card mid">
+    <div class="phase-label-tag">中期（3〜9ヶ月）</div>
+    <div class="phase-title">コスト最適化 & 自動化</div>
+    <div class="phase-desc">佐川→ネコポス転換検討。取り寄せ在庫のClaude API自動連携導入。メガ割ピーク人員フロー整備</div>
+  </div>
+  <div class="phase-card long">
+    <div class="phase-label-tag">長期（9ヶ月〜）</div>
+    <div class="phase-title">月商1億円対応インフラ</div>
+    <div class="phase-desc">EC専用コスト分離。月商1億円時974件/日体制設計。Rise UP契約条件確認後、拡張・移転計画策定</div>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi-card blue">
+    <div class="kpi-label">月平均出荷件数（新倉庫期）</div>
+    <div class="kpi-value">1,961件</div>
+    <div class="kpi-sub">通常月平均 <strong>約47件/日</strong></div>
+    <div class="kpi-note">出典: PL梱包費÷¥50/件</div>
+  </div>
+  <div class="kpi-card yellow">
+    <div class="kpi-label">メガ割ピーク（9月）</div>
+    <div class="kpi-value">4,143件</div>
+    <div class="kpi-sub">通常月比 <strong>最大3.9倍</strong></div>
+    <div class="kpi-note">出典: PL実績（2025年9月）</div>
+  </div>
+  <div class="kpi-card orange">
+    <div class="kpi-label">物流費率 旧倉庫平均</div>
+    <div class="kpi-value">6.4%</div>
+    <div class="kpi-sub">2024/12〜2025/2 <strong>PLベース実績</strong></div>
+    <div class="kpi-note">配送費+梱包費-客負担</div>
+  </div>
+  <div class="kpi-card red">
+    <div class="kpi-label">物流費率 新倉庫期平均</div>
+    <div class="kpi-value">7.6%</div>
+    <div class="kpi-sub">メガ割月は <strong>9%超</strong>に悪化</div>
+    <div class="kpi-note">※倉庫作業費(A-3)はPL未計上</div>
+  </div>
+  <div class="kpi-card green">
+    <div class="kpi-label">佐川加重平均単価</div>
+    <div class="kpi-value">¥428</div>
+    <div class="kpi-sub">A-5料金表×都道府県別出荷分布</div>
+    <div class="kpi-note">旧推計¥1,500は誤り</div>
+  </div>
+  <div class="kpi-card purple">
+    <div class="kpi-label">月商1億時 物流費率予測</div>
+    <div class="kpi-value">9.9%</div>
+    <div class="kpi-sub">A-3条件・現構成比維持前提</div>
+    <div class="kpi-note">業界上限水準。改善が必要</div>
+  </div>
+</div>
+
+<!-- SECTION: 出荷実績 -->
+<div class="section">
+  <div class="section-title">出荷実績・物流費率の推移</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-card-title">月別出荷件数（PL梱包費逆算）<span class="src">出典: PL統合</span></div>
+      <div class="chart-wrap tall">
+        <canvas id="chartShipments"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">月別物流費率（PLベース自社負担）<span class="src">出典: PL統合</span></div>
+      <div class="chart-wrap tall">
+        <canvas id="chartLogisticsRate"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="data-note">
+    ※ 物流費率 = （ネコポス発送費 + 宅配便発送費 + 梱包費 + SHOPLIST発送費 − お客様負担送料）÷ 売上合計。
+    <strong>A-3の倉庫作業費（出庫¥25/pcs・事務手数料¥20/件等）はPL未計上のため、実態の費率はさらに高い（推計+1〜2%）。</strong>
+    旧倉庫：2025年2月まで。新倉庫（Rise UP）：2025年3月〜。
+  </div>
+</div>
+
+<!-- SECTION: 1件あたりコスト構造 -->
+<div class="section">
+  <div class="section-title">1件あたり物流コスト構造（A-3・A-5実績ベース）</div>
+  <div class="cost-breakdown">
+    <div class="cost-breakdown-card">
+      <div class="cost-breakdown-title">🟦 ネコポス（全出荷の78.4%）</div>
+      <div class="cost-row"><span class="cost-row-label">配送料（A-5）</span><span class="cost-row-val">¥180</span></div>
+      <div class="cost-row"><span class="cost-row-label">出庫（¥25 × 1.75pcs）</span><span class="cost-row-val">¥44</span></div>
+      <div class="cost-row"><span class="cost-row-label">梱包（A-3）</span><span class="cost-row-val">¥20</span></div>
+      <div class="cost-row"><span class="cost-row-label">資材（A-3）</span><span class="cost-row-val">¥20</span></div>
+      <div class="cost-row"><span class="cost-row-label">事務手数料（A-3）</span><span class="cost-row-val">¥20</span></div>
+      <div class="cost-row"><span class="cost-row-label">合計</span><span class="cost-row-val">¥284</span></div>
+    </div>
+    <div class="cost-breakdown-card">
+      <div class="cost-breakdown-title">🟥 佐川60サイズ（全出荷の21.6%）</div>
+      <div class="cost-row"><span class="cost-row-label">配送料（加重平均）</span><span class="cost-row-val">¥428</span></div>
+      <div class="cost-row"><span class="cost-row-label">出庫（¥25 × 1.75pcs）</span><span class="cost-row-val">¥44</span></div>
+      <div class="cost-row"><span class="cost-row-label">梱包（A-3）</span><span class="cost-row-val">¥20</span></div>
+      <div class="cost-row"><span class="cost-row-label">資材（A-3）</span><span class="cost-row-val">¥20</span></div>
+      <div class="cost-row"><span class="cost-row-label">事務手数料（A-3）</span><span class="cost-row-val">¥20</span></div>
+      <div class="cost-row"><span class="cost-row-label">合計</span><span class="cost-row-val">¥532</span></div>
+    </div>
+  </div>
+  <div class="data-note" style="margin-top:12px;">
+    平均同梱数1.75pcs/件はD-2回答より（単品62%・2箱18.7%・3箱9.4%・4箱2.9%・5箱6.0%・それ以上1%）。
+    佐川加重平均¥428はA-5料金表×D-5都道府県別出荷分布（13,666件）により算出。
+  </div>
+</div>
+
+<!-- SECTION: 佐川転換インパクト -->
+<div class="section">
+  <div class="section-title">佐川→ネコポス転換インパクト試算</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-card-title">月別佐川発送件数<span class="src">出典: PL統合</span></div>
+      <div class="chart-wrap">
+        <canvas id="chartSaga"></canvas>
+      </div>
+    </div>
+    <div class="chart-card" style="display:flex; flex-direction:column; justify-content:center; padding:24px 28px;">
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:16px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">転換インパクト試算</div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">1件あたり削減額</div>
+          <div style="font-size:22px; font-weight:700; color:var(--green);">¥248<span style="font-size:13px; color:var(--text-muted);">/件</span></div>
+          <div style="font-size:11px; color:var(--text-muted);">¥532（佐川）− ¥284（ネコポス）</div>
+        </div>
+        <div style="background:var(--surface2); border-radius:6px; padding:12px 14px;">
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">月間最大削減額（全件転換時）</div>
+          <div style="font-size:22px; font-weight:700; color:var(--green);">¥31,541<span style="font-size:13px; color:var(--text-muted);">/月</span></div>
+          <div style="font-size:11px; color:var(--text-muted);">月平均127件 × ¥248</div>
+        </div>
+        <div style="background:rgba(210,153,34,0.08); border:1px solid rgba(210,153,34,0.3); border-radius:6px; padding:10px 14px;">
+          <div style="font-size:11px; color:var(--yellow);">⚠ 全件転換は不可</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">複数点大型購入・¥3,500未満の顧客負担対象外品はネコポス不可。転換可能品種の特定が先決。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: 月商1億円試算 -->
+<div class="section">
+  <div class="section-title">月商1億円時のスケールアップ試算</div>
+  <div class="chart-card" style="margin-bottom:12px;">
+    <div class="chart-card-title">出荷件数スケール比較（件/日）</div>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+      <div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px;">
+          <span>通常月平均（現状）</span><strong style="color:var(--text);">47件/日</strong>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:4px; height:26px; overflow:hidden;">
+          <div style="width:4.8%; height:100%; background:linear-gradient(90deg,#2ea043,#3fb950); border-radius:4px; display:flex; align-items:center; padding-left:6px; font-size:11px; font-weight:600; color:white; min-width:36px;">47件</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px;">
+          <span>メガ割ピーク（9月実績）</span><strong style="color:var(--text);">138件/日（4,143件÷30日）</strong>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:4px; height:26px; overflow:hidden;">
+          <div style="width:14.2%; height:100%; background:linear-gradient(90deg,#d29922,#f0b429); border-radius:4px; display:flex; align-items:center; padding-left:6px; font-size:11px; font-weight:600; color:white; min-width:50px;">138件</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px;">
+          <span>ヒアリング：メガ割1日最大</span><strong style="color:var(--text);">680件/日</strong>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:4px; height:26px; overflow:hidden;">
+          <div style="width:69.8%; height:100%; background:linear-gradient(90deg,#e3702c,#f08040); border-radius:4px; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:600; color:white;">680件</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px;">
+          <span>月商1億円時 平均</span><strong style="color:var(--blue);">974件/日（¥100M÷平均単価¥3,424÷30日）</strong>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:4px; height:26px; overflow:hidden;">
+          <div style="width:100%; height:100%; background:linear-gradient(90deg,#58a6ff,#79c0ff); border-radius:4px; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:600; color:white;">974件/日</div>
+        </div>
+      </div>
+    </div>
+    <div class="data-note" style="margin-top:12px;">
+      月商1億円時の出荷件数：¥100M ÷ 平均単価¥3,424（PL新倉庫期の実績平均）÷ 30日 ＝ 974件/日。
+      A-3条件・現配送構成比（ネコポス78.4%・佐川21.6%）維持前提の物流費試算：<strong>約¥986万/月（売上比9.9%）</strong>。業界水準上限のため費率改善が必要。
+    </div>
+  </div>
+
+  <!-- 人員試算 -->
+  <div class="chart-card">
+    <div class="chart-card-title">最適人員試算（業界標準ベース）<span class="src">※E-1〜E-3「移転直後のため不明」のため業界標準から推計</span></div>
+    <div style="overflow-x:auto;">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>シナリオ</th>
+            <th>件数/日</th>
+            <th>作業時間/件<br><span style="font-weight:400;">(業界標準)</span></th>
+            <th>必要人員<br>(熟練)</th>
+            <th>必要人員<br>(標準)</th>
+            <th>コスト逆算<br>最適人員</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge normal">通常月</span></td>
+            <td class="num">47</td>
+            <td style="text-align:center;">3〜5分</td>
+            <td class="num ok">1名</td>
+            <td class="num ok">1名</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td><span class="badge mega">メガ割ピーク</span></td>
+            <td class="num">680</td>
+            <td style="text-align:center;">3〜5分</td>
+            <td class="num warn">最低5名</td>
+            <td class="num warn">最低8名</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td><span class="badge neko">月商1億円 平均</span></td>
+            <td class="num">974</td>
+            <td style="text-align:center;">3〜5分</td>
+            <td class="num warn">最低7名</td>
+            <td class="num warn">最低11名</td>
+            <td class="num warn">約18名</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="data-note" style="margin-top:10px;">
+      コスト逆算：月商1億円時物流費¥986万 × 人件費比率45%（業界標準）÷ ¥24万（時給¥1,200・8h・25日/人月）＝ 約18名。
+      <strong>現在の倉庫体制（E-1〜E-3）は移転直後のため不明。体制把握後に具体的な人員計画を策定する。</strong>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: 課題・原因 -->
+<div class="section">
+  <div class="section-title">主要課題・原因</div>
+  <div class="finding-grid">
+    <div class="finding-card yellow">
+      <span class="finding-tag">課題</span>
+      <div class="finding-title">物流費率の構造的上昇リスク</div>
+      <div class="finding-body">PLベース旧倉庫<strong>6.4%</strong>→新倉庫<strong>7.6%</strong>に上昇。A-3の倉庫作業費がPL未計上のため実態は<strong>推計9〜11%</strong>の可能性。業界水準（6〜10%）上限に近い。</div>
+    </div>
+    <div class="finding-card yellow">
+      <span class="finding-tag">課題</span>
+      <div class="finding-title">メガ割月の物流費率高騰</div>
+      <div class="finding-body">6月7.8%・9月9.3%（PLベース）。特売による単価下落（通常¥3,700→メガ割¥2,600水準）が物流費を相対的に押し上げる構造。出荷件数は通常月比<strong>最大3.9倍</strong>。</div>
+    </div>
+    <div class="finding-card yellow">
+      <span class="finding-tag">課題</span>
+      <div class="finding-title">EC専用コストが不可視</div>
+      <div class="finding-body">EC・卸OEM在庫が同一ロケーションに混在（<strong>C-8：識別ルールなし</strong>）。A-3の倉庫作業費はEC・卸OEM混在コストで、EC単独の物流費率が算出できない。</div>
+    </div>
+    <div class="finding-card orange">
+      <span class="finding-tag">原因</span>
+      <div class="finding-title">Qoo10メガ割への売上集中</div>
+      <div class="finding-body">Qoo10売上：通常月¥20〜70万→メガ割6月<strong>¥437万</strong>・9月<strong>¥672万</strong>（7〜30倍）。出荷件数の最大/最小倍率は<strong>3.9倍（PLベース）</strong>。</div>
+    </div>
+    <div class="finding-card orange">
+      <span class="finding-tag">原因</span>
+      <div class="finding-title">物流KPI未設定</div>
+      <div class="finding-body">誤出荷率・返品率（<strong>F-4・F-6「記録なし」</strong>）・1件あたりコスト・物流費率のいずれも定常モニタリングなし。改善PDCAのベースラインが存在しない。</div>
+    </div>
+    <div class="finding-card blue">
+      <span class="finding-tag">現状・制約</span>
+      <div class="finding-title">倉庫移転直後で体制不明</div>
+      <div class="finding-body"><strong>E-1〜E-3「移転直後のため不明」</strong>。現在の処理キャパシティ・人員体制・作業効率が把握できておらず、大規模変更は3ヶ月後に体制把握してから判断するのが適切。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: ロードマップ -->
+<div class="section">
+  <div class="section-title">改善ロードマップ</div>
+  <div class="chart-card">
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-pill now">今すぐ</span>
+          <span class="phase-time">〜3ヶ月</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">【最優先】物流KPI管理表の導入</div>
+          <div class="roadmap-desc">設定すべきKPI：①物流費率（目標7%以下）②1件あたり物流コスト（目標¥300以下）③ネコポス/佐川構成比 ④月別出荷件数・波動係数。ロジレスCSVから月次で集計するExcel管理表を設計し、モニタリングを開始する。</div>
+          <div class="roadmap-impact green">✦ 改善PDCAのベースライン構築。費率の実態把握が最初の一歩</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-pill now">今すぐ</span>
+          <span class="phase-time">〜3ヶ月</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">倉庫体制・実コストの把握（Rise UPへの確認）</div>
+          <div class="roadmap-desc">E-1〜E-3（スタッフ人数・繁忙期体制・タイムスケジュール）が「移転直後のため不明」のまま。3ヶ月以内に倉庫担当者へ確認し、C-1〜C-3（倉庫坪数・棚レイアウト）とあわせて実態を把握する。</div>
+          <div class="roadmap-impact green">✦ 全施策の前提となる情報。早期確認が必須</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-pill mid">中期</span>
+          <span class="phase-time">3〜9ヶ月</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">佐川→ネコポス転換可能品種の特定と切り替え</div>
+          <div class="roadmap-desc">月平均127件の佐川出荷のうち、ネコポスサイズ適合品を特定して転換。1件あたり¥248削減・月間最大¥31,541の効果。A-7の送料ルール（¥3,500以上送料無料・自社負担設定商品）を踏まえた転換可能割合の確認が先決。</div>
+          <div class="roadmap-impact blue">✦ 月間最大¥31,541削減（全件転換時）。転換可能割合により変動</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-pill mid">中期</span>
+          <span class="phase-time">3〜9ヶ月</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">取り寄せ在庫自動連携（Claude API活用）</div>
+          <div class="roadmap-desc">94,000行×手動マクロ（毎日）をClaude APIを活用した自動化ツールに置き換え。仕組み：ロジレスの在庫データをCSV/API取得 → Claude APIが0/100判定を処理 → 各販路（楽天・SHOPLIST・Qoo10・Yahoo・本店）に自動更新。Vercel上に構築可能。更新漏れリスク排除＋北垣さんの工数をCS対応・CRM施策に転換できる。</div>
+          <div class="roadmap-impact blue">✦ 欠品リスク排除。特にメガ割期間中の在庫ズレ防止に直結</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-pill long">長期</span>
+          <span class="phase-time">9ヶ月〜</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">月商1億円対応インフラ設計（EC専用コスト分離・体制拡張）</div>
+          <div class="roadmap-desc">月商1億円時の平均974件/日に対応するため、EC・卸OEM在庫のロケーション分離、Rise UP長期契約の満期確認、フルフィルメント拡張計画の策定を進める。業界標準での必要人員は熟練7〜標準11名、コスト逆算では約18名体制。物流費率を業界水準内（10%以下）に維持するため、早期からのコスト管理が利益率を守る。</div>
+          <div class="roadmap-impact purple">✦ 月商1億円達成時の物流費¥986万/月を業界水準内に抑えるための長期設計</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>© 2026 Togetoge Consulting ／ アイトルテ調査分析レポート v2</span>
+  <span>出典：PL統合・D-4サイズ別・D-5都道府県別・A-5料金表・物流ヒアリングシート（全7シート）</span>
+</div>
+
+<script>
+// ── 月別出荷件数（梱包費÷50）
+const months = ['25/03','25/04','25/05','25/06','25/07','25/08','25/09','25/10','25/11','25/12','26/01'];
+const shipments = [1115, 1051, 1108, 3351, 1700, 1133, 4143, 1970, 2278, 2495, 1231];
+const isMega = [false,false,false,true,false,false,true,false,false,false,false];
+
+new Chart(document.getElementById('chartShipments'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      label: '出荷件数',
+      data: shipments,
+      backgroundColor: shipments.map((v,i) => isMega[i] ? 'rgba(210,153,34,0.85)' : 'rgba(88,166,255,0.7)'),
+      borderRadius: 4,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: (ctx) => isMega[ctx.dataIndex] ? '⚡ メガ割月' : ''
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { display: false } },
+      y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+
+// ── 物流費率推移
+const rateMonths = ['24/12','25/01','25/02','25/03','25/04','25/05','25/06','25/07','25/08','25/09','25/10','25/11','25/12','26/01'];
+const rates = [6.7, 6.4, 5.9, 6.9, 5.5, 5.2, 7.8, 5.9, 6.5, 9.3, 8.1, 10.4, 12.4, 5.9];
+const isOld = [true, true, true, false,false,false,false,false,false,false,false,false,false,false];
+
+new Chart(document.getElementById('chartLogisticsRate'), {
+  type: 'line',
+  data: {
+    labels: rateMonths,
+    datasets: [
+      {
+        label: '旧倉庫（実績）',
+        data: rates.map((v,i) => isOld[i] ? v : null),
+        borderColor: '#8b949e',
+        backgroundColor: 'rgba(139,148,158,0.1)',
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: '#8b949e',
+        spanGaps: false,
+      },
+      {
+        label: '新倉庫（実績）',
+        data: rates.map((v,i) => !isOld[i] ? v : null),
+        borderColor: '#58a6ff',
+        backgroundColor: 'rgba(88,166,255,0.1)',
+        tension: 0.3,
+        pointRadius: rates.map((v,i) => !isOld[i] && v >= 9 ? 7 : 4),
+        pointBackgroundColor: rates.map((v,i) => !isOld[i] && v >= 9 ? '#f85149' : '#58a6ff'),
+        spanGaps: false,
+      },
+      {
+        label: '業界目安上限（10%）',
+        data: rateMonths.map(() => 10),
+        borderColor: 'rgba(248,81,73,0.4)',
+        borderDash: [4, 4],
+        borderWidth: 1,
+        pointRadius: 0,
+        fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#8b949e', font: { size: 10 }, boxWidth: 12 } },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(1)}%`
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { display: false } },
+      y: {
+        ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v + '%' },
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        min: 0, max: 14
+      }
+    }
+  }
+});
+
+// ── 月別佐川件数
+const sagaMonths = ['25/03','25/04','25/05','25/06','25/07','25/08','25/09','25/10','25/11','25/12','26/01'];
+const sagaCounts = [67, 65, 90, 302, 78, 81, 193, 117, 190, 131, 85];
+
+new Chart(document.getElementById('chartSaga'), {
+  type: 'bar',
+  data: {
+    labels: sagaMonths,
+    datasets: [{
+      label: '佐川件数',
+      data: sagaCounts,
+      backgroundColor: sagaCounts.map(v => v >= 150 ? 'rgba(248,81,73,0.8)' : 'rgba(248,81,73,0.45)'),
+      borderRadius: 4,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => `削減余地: ¥${(ctx.parsed.y * 248).toLocaleString()}`
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { display: false } },
+      y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
